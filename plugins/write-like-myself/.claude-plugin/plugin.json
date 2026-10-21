@@ -1,0 +1,11 @@
+{
+  "name": "write-like-myself",
+  "description": "A writing skill that helps AI agents write the way Yili Yang would, built on how readers read rather than on lists of rules.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Yili Yang"
+  },
+  "homepage": "https://github.com/yi-li-yang/write-like-myself",
+  "repository": "https://github.com/yi-li-yang/write-like-myself",
+  "license": "MIT"
+}

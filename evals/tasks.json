@@ -1,0 +1,935 @@
+{
+  "pool": "v1",
+  "about": "Writing tasks for testing the write-like-myself skill. Each task gives an agent everything it needs to know, so that a rejected text reflects the writing and not missing facts. The prompt is worded the way Yili types. Facts and materials go to the agent as notes.md and named files; expectations are checked afterwards and are never shown to the agent. Tasks on unpublished work are kept in the private folder.",
+  "tasks": [
+    {
+      "id": "A01",
+      "family": "papers",
+      "genre": "abstract",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "write the abstract for the dataset paper, 200 words max",
+      "audience": "Readers of a data journal: Earth scientists and machine-learning researchers who work on permafrost.",
+      "limit_words": 200,
+      "facts": [
+        "Retrogressive thaw slumps (RTS) form when ice-rich permafrost on a slope thaws abruptly; they reshape Arctic hillslopes and can release carbon.",
+        "Where RTS occur across the Arctic is poorly known, because mapping them by hand is slow and has been done one region at a time.",
+        "Many research groups have published their own RTS digitisations, but in different formats and with no shared standard, which limits large studies and the training of deep learning models.",
+        "We combined 20 of these separate datasets into one, called ARTS (Arctic Retrogressive Thaw Slumps).",
+        "ARTS holds 23,529 digitisations where an RTS is present and 20,434 where none is present.",
+        "We also propose a data curation framework: guidelines for digitising, a metadata format, an indexing scheme, a storage format and rules for contributing.",
+        "The dataset is open, its changes are tracked with Git, and it is hosted on GitHub and at the Arctic Data Center. We expect new contributions."
+      ],
+      "materials": {},
+      "expectations": [
+        "At most 200 words",
+        "Opens with the phenomenon or the problem, not with 'In this paper' or 'This study'",
+        "Every number appears in the facts",
+        "States what the dataset contains and what it makes possible",
+        "Claims no primacy or superlative that the facts do not give"
+      ]
+    },
+    {
+      "id": "A02",
+      "family": "papers",
+      "genre": "results",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "write the results paragraph for this table. just the results, the discussion comes later",
+      "audience": "Readers of a remote sensing journal.",
+      "limit_words": 150,
+      "facts": [
+        "The table in results_table.md is the full set of results for this paragraph.",
+        "The model is a U-Net with an EfficientNet-B3 encoder.",
+        "Test tiles were held out by region. Banks Island tiles were never used in training."
+      ],
+      "materials": {
+        "results_table.md": "| Training regions | Test region | IoU | Precision | Recall |\n|---|---|---|---|---|\n| Yamal only | Yamal | 0.74 | 0.81 | 0.79 |\n| Yamal only | Banks Island | 0.41 | 0.66 | 0.48 |\n| Yamal and five other regions | Yamal | 0.73 | 0.80 | 0.79 |\n| Yamal and five other regions | Banks Island | 0.62 | 0.74 | 0.71 |\n\nIoU is intersection over union on held-out test tiles."
+      },
+      "expectations": [
+        "Reports the fall from 0.74 to 0.41 IoU when the Yamal-only model is tested on Banks Island",
+        "Reports the rise to 0.62 on Banks Island with multi-region training, and that Yamal stays about the same",
+        "Gives no explanation of why (interpretation belongs to the Discussion)",
+        "Every number matches the table",
+        "The first sentence states the main finding"
+      ]
+    },
+    {
+      "id": "A03",
+      "family": "papers",
+      "genre": "methods",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "turn my notes into the methods paragraph on how we split the data",
+      "audience": "Journal readers who may want to repeat the work.",
+      "limit_words": 180,
+      "facts": [
+        "Image tiles are 512 by 512 pixels of PlanetScope imagery at 3 m.",
+        "Tiles were split by ecoregion, not tile by tile, so that neighbouring tiles never end up in both training and test data.",
+        "There are 14 ecoregions: 10 for training, 2 for validation and 2 for testing.",
+        "The validation set was used to choose the detection threshold and to stop training. The test set was scored once, at the end.",
+        "Background tiles were sampled so that RTS tiles make up 1 in 200 tiles in the validation and test sets, about the rate the model meets when mapping.",
+        "The training set has more RTS tiles (1 in 10) so that the model sees enough examples."
+      ],
+      "materials": {},
+      "expectations": [
+        "States that the split is by ecoregion and why (neighbouring tiles would leak between sets)",
+        "Gives the 10, 2 and 2 ecoregion counts",
+        "States the 1-in-200 rate for validation and test and the 1-in-10 rate for training, with the reason for each",
+        "States that the test set was scored once",
+        "Reports no results"
+      ]
+    },
+    {
+      "id": "A04",
+      "family": "papers",
+      "genre": "discussion",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "draft a discussion paragraph on why adding other regions helped on banks island. careful not to overclaim, we didn't test the reasons directly",
+      "audience": "Readers of a remote sensing journal.",
+      "limit_words": 180,
+      "facts": [
+        "Result: a model trained on Yamal only reached IoU 0.41 on Banks Island; trained on Yamal and five other regions it reached 0.62. On Yamal itself both reached about 0.74.",
+        "Possible reason 1: slumps on Banks Island are larger and form in different surface materials from those on Yamal.",
+        "Possible reason 2: the multi-region model saw a wider range of headwall shapes and vegetation backgrounds.",
+        "Observation: most of the Yamal-only model's missed slumps on Banks Island had bright, unvegetated floors, which are rare on Yamal and common on Banks Island.",
+        "We ran no experiment that isolates any single reason.",
+        "Earlier regional studies reported similar losses when models were moved to new regions. No specific citation is available yet; leave a placeholder."
+      ],
+      "materials": {},
+      "expectations": [
+        "Keeps the result and the explanations apart, and marks the explanations as untested",
+        "Uses the observation about bright floors as evidence, not as proof",
+        "Invents no citation (a placeholder is fine)",
+        "Ends on what the finding means for choosing training data"
+      ]
+    },
+    {
+      "id": "A05",
+      "family": "papers",
+      "genre": "caption",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "caption for figure 3. keep it short",
+      "audience": "Journal readers looking at the figure.",
+      "limit_words": 70,
+      "facts": [
+        "Figure 3 has four panels.",
+        "(a) PlanetScope image of a slump on the Yamal Peninsula, July 2023.",
+        "(b) The manual label of that slump.",
+        "(c) The model's probability map for the same tile, from 0 to 1.",
+        "(d) The detection after a 0.5 threshold, drawn over the image: true positive in green, false positive in red.",
+        "Each panel has a 500 m scale bar. The legend already shows the colour scale."
+      ],
+      "materials": {},
+      "expectations": [
+        "Opens with a brief summary of the figure, then gives each panel its own short sentence",
+        "Does not repeat what the legend shows",
+        "Interprets nothing",
+        "At most 70 words"
+      ]
+    },
+    {
+      "id": "A06",
+      "family": "papers",
+      "genre": "highlights",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "write 4 highlights for the SAM paper, each under 85 characters including spaces",
+      "audience": "Journal readers scanning the article page.",
+      "limit_words": 60,
+      "facts": [
+        "Maps of features in fast-changing landscapes, such as thawing permafrost, go out of date quickly.",
+        "We used old, outdated outlines as location prompts for the Segment Anything Model (SAM), which then segments the features in current satellite images without task-specific training.",
+        "The framework has two parts: an automated pipeline that prompts SAM with the historical outlines, and an interactive tool in which experts correct the results.",
+        "Case study: retrogressive thaw slumps.",
+        "Best intersection over union for routine updates: 0.80 plus or minus 0.10.",
+        "Quality matched manual digitising by experts, in half the time.",
+        "The framework does not depend on a particular model or task."
+      ],
+      "materials": {},
+      "expectations": [
+        "Exactly 4 bullets",
+        "Each bullet is at most 85 characters including spaces",
+        "Each bullet states a finding or contribution plainly",
+        "Numbers match the facts"
+      ]
+    },
+    {
+      "id": "A07",
+      "family": "papers",
+      "genre": "introduction",
+      "mode": "coedit",
+      "outside_field": false,
+      "prompt": "make this easier to read. don't change the meaning",
+      "audience": "Readers of a remote sensing journal.",
+      "limit_words": null,
+      "facts": [
+        "The paragraph to edit is in paragraph.md.",
+        "Every factual claim in it is correct and must stay."
+      ],
+      "materials": {
+        "paragraph.md": "Wildfires in the Arctic-boreal zone — a region warming roughly four times faster than the global average — are reshaping the carbon balance of northern ecosystems; yet our ability to quantify their footprint remains fundamentally constrained by the patchwork of existing burned-area products, which, despite decades of methodological refinement, continue to disagree markedly in both extent and timing. Crucially, this disagreement is not merely a technical nuisance: it propagates directly into carbon emission estimates, creating a cascade of uncertainty that undermines efforts to close the northern carbon budget. Here, we leverage the synergistic potential of Landsat and Sentinel-2 imagery to deliver a robust, harmonised burned-area record that bridges this critical gap."
+      },
+      "expectations": [
+        "Keeps every claim: the warming rate, the disagreement between products in extent and timing, its effect on carbon emission estimates, and the combined Landsat and Sentinel-2 record",
+        "Adds no claim",
+        "The dash aside, the semicolon and the colon explanation are gone or rewritten as plain sentences",
+        "Words that only add importance (crucially, synergistic, robust, critical gap, leverage) are gone",
+        "Sentences are shorter and still linked"
+      ]
+    },
+    {
+      "id": "A08",
+      "family": "papers",
+      "genre": "results",
+      "mode": "coedit",
+      "outside_field": false,
+      "prompt": "this results paragraph has discussion mixed in. fix it, keep only results here and give me the interpretation bits separately",
+      "audience": "Readers of a remote sensing journal.",
+      "limit_words": null,
+      "facts": [
+        "The paragraph is in paragraph.md.",
+        "Return the results paragraph, then, under a separate heading, the interpretations to move to the Discussion."
+      ],
+      "materials": {
+        "paragraph.md": "The model detected 18,412 water bodies smaller than 1 ha across the study area, 64% more than the existing inventory, which suggests that previous products have systematically overlooked the smallest ponds, most likely because their coarser resolution blurs pond edges into the surrounding tundra. Seasonal variability was pronounced: 31% of ponds present in June had disappeared by late August, a pattern we attribute to evaporation and drainage through thawing permafrost, highlighting the vulnerability of these systems to continued warming. Detection accuracy was high, with an F1 score of 0.87 on the validation set, confirming the robustness of the approach."
+      },
+      "expectations": [
+        "The results paragraph keeps 18,412, 64%, 31% and F1 0.87 as observations",
+        "The results paragraph contains no explanation or judgement",
+        "The interpretations (coarse resolution, evaporation and drainage, vulnerability, robustness) are listed separately",
+        "Adds no claim"
+      ]
+    },
+    {
+      "id": "A10",
+      "family": "papers",
+      "genre": "abstract",
+      "mode": "draft",
+      "outside_field": true,
+      "prompt": "write an abstract from these notes, 200 words max",
+      "audience": "Readers of an urban climate journal.",
+      "limit_words": 200,
+      "facts": [
+        "City: Manchester, UK. Period: summer 2022.",
+        "Land surface temperature came from Landsat 8 and 9 thermal bands, resampled to 30 m.",
+        "Tree canopy cover came from 0.5 m aerial imagery classified with a random forest (overall accuracy 0.91).",
+        "Unit of analysis: 1,500 census output areas.",
+        "Each 10 percentage points of canopy cover was associated with a 0.8 degree C lower mean afternoon surface temperature (95% CI 0.6 to 1.0), after controlling for building density and distance to water.",
+        "The association was weaker in the densest areas (0.4 degree C per 10 points).",
+        "Land surface temperature is not air temperature.",
+        "Use: canopy targets for the hottest neighbourhoods."
+      ],
+      "materials": {},
+      "expectations": [
+        "At most 200 words",
+        "Describes an association, not a cause",
+        "Does not present surface temperature as air temperature",
+        "Every number matches the facts"
+      ]
+    },
+    {
+      "id": "B01",
+      "family": "letters",
+      "genre": "cover_letter",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "draft the cover letter for the SAM paper to JAG. one page max",
+      "audience": "The editor of the International Journal of Applied Earth Observation and Geoinformation.",
+      "limit_words": 350,
+      "facts": [
+        "Manuscript title: Interactive segmentation of thaw slumps with the Segment Anything Model and outdated labels.",
+        "Corresponding author: Yili Yang, Woodwell Climate Research Center. 12 authors.",
+        "What it does: uses old outlines of features as prompts for the Segment Anything Model to segment the features in current imagery, with an interactive tool for expert correction.",
+        "Main result: best intersection over union of 0.80 plus or minus 0.10 for routine updates; quality matched expert manual digitising in half the time.",
+        "Why this journal: it publishes applied Earth observation methods, and keeping labels up to date is a practical problem for anyone mapping change.",
+        "The work is original, not under consideration elsewhere, and all authors approved it. No competing interests.",
+        "Code and data are open on GitHub."
+      ],
+      "materials": {},
+      "expectations": [
+        "Addressed to the editor",
+        "States what the paper does and finds in the first paragraph",
+        "Says why it fits the journal, without flattering the journal",
+        "Includes the standard declarations",
+        "At most 350 words"
+      ]
+    },
+    {
+      "id": "B02",
+      "family": "letters",
+      "genre": "reviewer_response",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "draft the response to R2.3",
+      "audience": "Reviewer 2 and the editor.",
+      "limit_words": 150,
+      "facts": [
+        "The reviewer's comment is in comment.md and what we changed is in changes.md."
+      ],
+      "materials": {
+        "comment.md": "R2.3: The validation tiles appear to be adjacent to the training tiles. Spatial autocorrelation means the reported accuracy is likely optimistic. The authors should use spatially independent validation.",
+        "changes.md": "We re-ran the evaluation with ecoregion-blocked folds, so no ecoregion appears in both training and validation. F1 fell from 0.71 to 0.64. We added Table S4 with the blocked results and rewrote Section 3.3 to describe the new split. The main conclusion holds: under blocked folds the multi-region model still beats the single-region model (0.64 against 0.49)."
+      },
+      "expectations": [
+        "Leads with what was done, not with long thanks",
+        "Reports the lower F1 plainly",
+        "Points to Section 3.3 and Table S4",
+        "States the conclusion that still holds, with its numbers",
+        "At most 150 words"
+      ]
+    },
+    {
+      "id": "B03",
+      "family": "letters",
+      "genre": "reviewer_response",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "reply to this comment. we won't do it, explain why, be polite",
+      "audience": "Reviewer 1 and the editor.",
+      "limit_words": 130,
+      "facts": [
+        "The comment is in comment.md.",
+        "The paper is about PlanetScope imagery at 3 m.",
+        "Many RTS are smaller than 1 ha, so they are only a few Sentinel-2 pixels (10 m) wide.",
+        "A test on Sentinel-2 would need new labels drawn at Sentinel-2 resolution, and none exist for our study area.",
+        "We agree that working across sensors matters. We added a sentence to Section 5.3 naming it as future work."
+      ],
+      "materials": {
+        "comment.md": "R1.5: The authors should test their model on Sentinel-2 imagery as well, to show it generalises across sensors."
+      },
+      "expectations": [
+        "Accepts that the point matters",
+        "Gives the concrete reasons (slump size against 10 m pixels; no labels at that resolution)",
+        "States the change made in Section 5.3",
+        "Polite without grovelling",
+        "At most 130 words"
+      ]
+    },
+    {
+      "id": "B04",
+      "family": "letters",
+      "genre": "grant_significance",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "write the why-now paragraph for the fellowship application, 200 words",
+      "audience": "A multidisciplinary panel; not all are remote sensing experts.",
+      "limit_words": 200,
+      "facts": [
+        "The fellowship is a two-year early-career research fellowship.",
+        "Project: track how retrogressive thaw slumps grow from year to year across the Arctic, using PlanetScope images from 2017 to 2025.",
+        "Why now, 1: near-daily 3 m PlanetScope imagery has covered the whole Arctic since 2017, so there are now more than eight years of history.",
+        "Why now, 2: a circumpolar map of 19,068 slumps, released openly in 2026, gives a starting inventory.",
+        "Why now, 3: in parts of the Arctic, slumps have become more active over recent warmer and wetter summers, yet growth rates have been measured at only a few sites.",
+        "Growth rates matter for estimating carbon release and for judging risk to roads and buildings."
+      ],
+      "materials": {},
+      "expectations": [
+        "Makes one main point",
+        "Explains concretely why now (the image archive and the inventory)",
+        "Explains or avoids specialist terms for a mixed panel",
+        "At most 200 words"
+      ]
+    },
+    {
+      "id": "B05",
+      "family": "letters",
+      "genre": "grant_aims",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "write the aims section, 3 aims, 250 words max",
+      "audience": "A multidisciplinary review panel.",
+      "limit_words": 250,
+      "facts": [
+        "Project: track how retrogressive thaw slumps grow from year to year across the Arctic, using PlanetScope images from 2017 to 2025, starting from a 2026 inventory of 19,068 slumps.",
+        "Aim 1: build a method that links the same slump across years by matching its outlines.",
+        "Aim 2: measure growth rates, with uncertainty, for every slump in the inventory over 2017 to 2025.",
+        "Aim 3: test which terrain and climate variables explain growth: slope, ground ice content, summer temperature and rainfall.",
+        "Outputs: an open dataset of annual growth, open code and a paper."
+      ],
+      "materials": {},
+      "expectations": [
+        "Three aims, clearly separated",
+        "Each aim says what will be done and what it delivers",
+        "Claims no more than the facts support",
+        "At most 250 words"
+      ]
+    },
+    {
+      "id": "B06",
+      "family": "letters",
+      "genre": "peer_review",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "write my review of this paper. main points only, the editor wants it short",
+      "audience": "The editor and the authors.",
+      "limit_words": 350,
+      "facts": [
+        "My notes on the manuscript are in manuscript_notes.md."
+      ],
+      "materials": {
+        "manuscript_notes.md": "Manuscript: a new deep learning model that maps landslides from Sentinel-2 imagery, with a reported F1 of 0.93.\n\nProblems:\n1. Training and test tiles were split at random from the same three valleys, so spatial autocorrelation probably inflates the scores.\n2. Half of the test tiles contain landslides, but landslides cover less than 1% of the region. Precision in real use will be much lower.\n3. No comparison with a simple baseline, such as a threshold on NDVI change.\n4. The claim that the model generalises globally is not tested; all data come from one country.\n\nStrengths: clearly written, code is shared, and the labelled dataset is useful to others.\n\nMy recommendation: major revision."
+      },
+      "expectations": [
+        "Opens with a short summary of what the paper does",
+        "States the strengths briefly",
+        "Each of the four problems comes with why it matters and what to do",
+        "Gives the recommendation",
+        "Collegial tone; at most 350 words"
+      ]
+    },
+    {
+      "id": "B07",
+      "family": "letters",
+      "genre": "reference_letter",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "write a reference letter for Sam Patel, applying for a PhD in remote sensing at Leeds. I supervised Sam's internship",
+      "audience": "A PhD admissions panel.",
+      "limit_words": 300,
+      "facts": [
+        "Sam Patel, MSc student, did a 10-week remote internship with me at Woodwell Climate Research Center in summer 2025.",
+        "Sam built a pipeline to compare three cloud-masking methods on PlanetScope imagery.",
+        "Sam found that the simplest method was within 2% of the best one in accuracy and five times faster.",
+        "Sam presented the work at our team meeting and wrote clear documentation that the team still uses.",
+        "Sam asks good questions and works independently.",
+        "Area to grow: Sam tends to hold back work until it is polished; this improved during the internship when we set weekly check-ins.",
+        "I have supervised 9 interns and mentees. Sam is one of the strongest."
+      ],
+      "materials": {},
+      "expectations": [
+        "Backs each claim with a concrete example from the facts",
+        "Mentions the area to grow constructively",
+        "The comparison matches the facts (one of the strongest of 9)",
+        "No generic superlatives without evidence",
+        "At most 300 words"
+      ]
+    },
+    {
+      "id": "B09",
+      "family": "letters",
+      "genre": "support_letter",
+      "mode": "draft",
+      "outside_field": true,
+      "prompt": "write a short support letter for the river group's council grant. I'm a member, not a councillor",
+      "audience": "The council's community fund panel.",
+      "limit_words": 200,
+      "facts": [
+        "The group is the Riverside Volunteers, a volunteer group that cleans and monitors a local river.",
+        "They are applying for 4,000 pounds from the council's community fund to buy water-testing kits and run monthly sampling with local schools.",
+        "I have been a member for two years. I am a scientist who works with environmental data.",
+        "The group has collected 18 months of litter counts. About 25 volunteers take part regularly.",
+        "The water data would be shared openly online."
+      ],
+      "materials": {},
+      "expectations": [
+        "Says who the writer is and their link to the group",
+        "Supports the request with the concrete facts (18 months of data, 25 volunteers, open data, schools)",
+        "Does not exaggerate",
+        "At most 200 words"
+      ]
+    },
+    {
+      "id": "B10",
+      "family": "letters",
+      "genre": "grant_significance",
+      "mode": "coedit",
+      "outside_field": false,
+      "prompt": "tone this down. it still needs to convince the panel",
+      "audience": "A grant review panel.",
+      "limit_words": null,
+      "facts": [
+        "The paragraph is in paragraph.md. Keep its content; change how it says it."
+      ],
+      "materials": {
+        "paragraph.md": "This groundbreaking project will revolutionise our understanding of Arctic permafrost dynamics by harnessing cutting-edge artificial intelligence to unlock unprecedented insights from petabytes of satellite imagery. By seamlessly integrating state-of-the-art foundation models with a meticulously curated training dataset, we will deliver a transformative, pan-Arctic view of thaw slump activity — a critical missing piece in the global carbon puzzle. The outcomes will empower policymakers, communities and scientists alike to navigate the complex challenges of a rapidly changing North."
+      },
+      "expectations": [
+        "Removes the hype words",
+        "Keeps the content: AI on large volumes of satellite imagery, foundation models with a curated training set, a pan-Arctic view of slump activity, relevance to the carbon budget, the three groups of users",
+        "Adds no claim",
+        "Still persuades through concrete statements",
+        "Same length or shorter"
+      ]
+    },
+    {
+      "id": "C01",
+      "family": "web",
+      "genre": "bio",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "100 word bio for the seminar poster, third person",
+      "audience": "A mixed university audience.",
+      "limit_words": 100,
+      "facts": [
+        "Yili Yang is an AI Scientist (Geospatial and Remote Sensing) at Woodwell Climate Research Center, since January 2022, working remotely from London.",
+        "Yili uses deep learning on satellite imagery to map how thawing permafrost changes Arctic landscapes.",
+        "Yili led ARTS, a community dataset of thaw slump outlines, and the first circumpolar thaw slump probability map and inventory, released openly at the NSF Arctic Data Center in 2026.",
+        "Yili did a PhD (2021) at the University of Edinburgh on how fluids flow through porous carbonate rocks, imaged with X-ray micro-CT.",
+        "Before Woodwell, Yili was a Data Science Fellow at Faculty in London."
+      ],
+      "materials": {},
+      "expectations": [
+        "Third person throughout",
+        "At most 100 words",
+        "No self-praise adjectives",
+        "One sentence says what the work is for"
+      ]
+    },
+    {
+      "id": "C02",
+      "family": "web",
+      "genre": "bio",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "50 words, for the AGU session programme",
+      "audience": "Conference attendees reading the session programme.",
+      "limit_words": 50,
+      "facts": [
+        "Yili Yang is an AI Scientist (Geospatial and Remote Sensing) at Woodwell Climate Research Center.",
+        "Yili uses deep learning on satellite imagery to map how thawing permafrost changes Arctic landscapes.",
+        "Yili led the ARTS thaw slump dataset and a circumpolar thaw slump map released in 2026.",
+        "PhD, University of Edinburgh, 2021."
+      ],
+      "materials": {},
+      "expectations": [
+        "At most 50 words",
+        "Third person",
+        "Current role and one line on the research"
+      ]
+    },
+    {
+      "id": "C03",
+      "family": "web",
+      "genre": "project_description",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "project description for my website, the ARTS dataset. 120 words",
+      "audience": "Visitors to Yili's personal website: researchers and possible employers.",
+      "limit_words": 120,
+      "facts": [
+        "ARTS (Arctic Retrogressive Thaw Slumps) combines 20 separate thaw slump datasets into one.",
+        "It holds 23,529 digitisations where a slump is present and 20,434 where none is present.",
+        "It comes with a curation framework so that others can add data in the same format.",
+        "I designed the dataset and the curation framework; the paper has 24 authors who contributed data.",
+        "Published in Scientific Data in 2025. Data on GitHub (whrc/ARTS) and at the Arctic Data Center (doi:10.18739/A2PK0738B).",
+        "Why it exists: before ARTS, slump outlines were scattered across separate studies in different formats, which made it hard to train models on more than one region."
+      ],
+      "materials": {},
+      "expectations": [
+        "At most 120 words",
+        "Says what the dataset is and why it exists",
+        "Says where to get it",
+        "First person for Yili's own role"
+      ]
+    },
+    {
+      "id": "C04",
+      "family": "web",
+      "genre": "project_description",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "write the website blurb for the circumpolar slump map. plain language, 150 words",
+      "audience": "General visitors to the website, not specialists.",
+      "limit_words": 150,
+      "facts": [
+        "Retrogressive thaw slumps are landslide-like features that form when ice-rich frozen ground thaws on a slope.",
+        "A deep learning model scanned 41.5 million tiles of 2025 PlanetScope satellite imagery across the Arctic, run on Google Cloud.",
+        "The result: 19,068 quality-checked slump outlines covering 529.7 square km.",
+        "Released openly at the NSF Arctic Data Center (doi:10.18739/A26970107) as map layers anyone can download.",
+        "Uses: a baseline for tracking change, finding new slumps, planning field work and estimating carbon impacts."
+      ],
+      "materials": {},
+      "expectations": [
+        "Explains what a thaw slump is in plain words",
+        "At most 150 words",
+        "Numbers match the facts",
+        "Says what the map can be used for"
+      ]
+    },
+    {
+      "id": "C05",
+      "family": "web",
+      "genre": "cv_bullets",
+      "mode": "coedit",
+      "outside_field": false,
+      "prompt": "rewrite my woodwell bullets for the CV. 4 bullets, one line each",
+      "audience": "Hiring committees reading a CV.",
+      "limit_words": 80,
+      "facts": [
+        "The current bullets are in current_bullets.md. Keep the facts; do not add any."
+      ],
+      "materials": {
+        "current_bullets.md": "- Project Lead: the pan-Arctic Retrogressive Thaw Slumps (RTS) mapping initiative, applying state-of-the-art deep learning techniques to satellite imagery for detecting and quantifying permafrost thaw features, directly contributing to climate feedback modelling and carbon cycle research\n- Designed and built the ARTS scientific dataset, establishing a benchmark training resource for deep learning applications in environmental monitoring\n- Published the first circumpolar retrogressive thaw slump probability map and polygon inventory (NSF Arctic Data Center), produced by a 41.5-million-tile deep learning inference sweep of 2025 PlanetScope imagery on Google Cloud Platform: 19,068 quality-controlled slump polygons covering 529.7 km2, released as cloud-optimised rasters and open vectors\n- Developed innovative machine learning workflows for multimodal data integration, combining various satellite imagery types and field observations to enhance feature detection accuracy\n- Developed a zero-shot, interactive segmentation workflow for satellite image labelling using the Segment Anything Model (SAM)"
+      },
+      "expectations": [
+        "Exactly 4 bullets, each on one line",
+        "Each bullet starts with what Yili did and names a concrete result",
+        "Filler such as state-of-the-art, innovative and directly contributing is gone",
+        "No new facts"
+      ]
+    },
+    {
+      "id": "C06",
+      "family": "web",
+      "genre": "research_statement",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "one paragraph for the research statement on what I work on and why, 200 words",
+      "audience": "A hiring committee.",
+      "limit_words": 200,
+      "facts": [
+        "Aim: measure how the Arctic land surface is changing as permafrost thaws, across the whole Arctic, using satellite imagery and deep learning.",
+        "Approach: build open labelled datasets (ARTS), models that work at continental scale with few labels, and tests that match real use (rare targets, regions held out from training).",
+        "Results so far: a circumpolar thaw slump map (2026); a labelling workflow with the Segment Anything Model that halves the time of manual digitising.",
+        "Next: measure how slumps change over time (growth rates) and extend the approach to other rare landforms.",
+        "Why it matters: thaw features release carbon and damage infrastructure, but their extent and change are poorly measured."
+      ],
+      "materials": {},
+      "expectations": [
+        "One paragraph",
+        "The first sentence states the research aim",
+        "Gives concrete past results and next steps",
+        "At most 200 words"
+      ]
+    },
+    {
+      "id": "C07",
+      "family": "web",
+      "genre": "profile",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "linkedin about section, first person, 150 words, not salesy",
+      "audience": "People viewing Yili's LinkedIn profile: researchers, recruiters, collaborators.",
+      "limit_words": 150,
+      "facts": [
+        "AI Scientist (Geospatial and Remote Sensing) at Woodwell Climate Research Center since 2022, based in London.",
+        "Work: deep learning on satellite imagery to map how thawing permafrost changes Arctic landscapes.",
+        "Led the ARTS thaw slump dataset and a circumpolar thaw slump map released in 2026.",
+        "Before: Data Science Fellow at Faculty, London; PhD (2021), University of Edinburgh, on fluid flow in porous rocks imaged with X-ray micro-CT.",
+        "Interests: open data, practical machine learning for Earth observation, mentoring (9 interns and mentees so far)."
+      ],
+      "materials": {},
+      "expectations": [
+        "First person",
+        "At most 150 words",
+        "Not salesy (no passionate, results-driven or similar)",
+        "Concrete about the work"
+      ]
+    },
+    {
+      "id": "C08",
+      "family": "web",
+      "genre": "profile",
+      "mode": "coedit",
+      "outside_field": false,
+      "prompt": "rewrite this so it sounds like me. plain",
+      "audience": "Visitors to Yili's personal website.",
+      "limit_words": null,
+      "facts": [
+        "The current text is in blurb.md.",
+        "What Yili actually does: deep learning on satellite imagery to map how thawing permafrost changes Arctic landscapes; led the ARTS dataset and a circumpolar thaw slump map; works with other scientists and shares data openly."
+      ],
+      "materials": {
+        "blurb.md": "At the frontier where artificial intelligence meets the frozen north, I build digital eyes that watch the Arctic breathe. My work weaves together petabytes of satellite imagery and cutting-edge deep learning to reveal the hidden heartbeat of thawing permafrost — the slumps, scars and subtle shifts that whisper of a warming world. From pixels to policy, I turn raw data into actionable insight, empowering scientists and communities to understand a landscape in flux."
+      },
+      "expectations": [
+        "No metaphors from the original (digital eyes, breathe, heartbeat, whisper, frontier)",
+        "States plainly what Yili does",
+        "First person",
+        "No claims beyond the facts",
+        "Same length or shorter"
+      ]
+    },
+    {
+      "id": "C09",
+      "family": "web",
+      "genre": "readme",
+      "mode": "draft",
+      "outside_field": true,
+      "prompt": "write the README intro for the octopus price notifier repo, short",
+      "audience": "People on GitHub who might use or fork the tool.",
+      "limit_words": 120,
+      "facts": [
+        "The tool is a small GitHub Actions cron job.",
+        "Each evening, after Octopus publishes the next day's Agile half-hourly electricity prices, it fetches them, draws a bar chart, works out the daily average and emails it to a list of recipients.",
+        "The email lists the below-average time windows, and flags negative prices clearly.",
+        "No server, no database, no cost.",
+        "Setup takes about 10 minutes: fork the repo, create a Gmail app password, add the secrets.",
+        "Why: to move flexible use such as laundry or car charging into the cheap half-hours."
+      ],
+      "materials": {},
+      "expectations": [
+        "The first sentence says what the tool does",
+        "Says who it is for or why",
+        "Mentions that setup is short, or points to the setup steps",
+        "At most 120 words"
+      ]
+    },
+    {
+      "id": "C10",
+      "family": "web",
+      "genre": "project_description",
+      "mode": "draft",
+      "outside_field": true,
+      "prompt": "short description of the travel map project for my website",
+      "audience": "Visitors to Yili's personal website.",
+      "limit_words": 80,
+      "facts": [
+        "A personal flight history tracker that shows every flight on an interactive 3D globe (Three.js).",
+        "It shows statistics: total distance, time in the air, countries, cities, busiest year, longest route, most-visited city.",
+        "It can watch Gmail for new flight bookings; Claude reads the confirmation emails and adds the route and date to the map.",
+        "Flights can be edited by hand and imported or exported as CSV with airport codes.",
+        "Inspired by the apps Fog of World and Flighty."
+      ],
+      "materials": {},
+      "expectations": [
+        "At most 80 words",
+        "Says what it shows and how new flights get in",
+        "Plain, no hype"
+      ]
+    },
+    {
+      "id": "D01",
+      "family": "everyday",
+      "genre": "email_reply",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "reply to this, keep it short",
+      "audience": "A PhD student at another university, not a collaborator.",
+      "limit_words": 120,
+      "facts": [
+        "The email is in incoming.md.",
+        "The RTS-absent digitisations are meant to be used as negative (background) examples; in the data they are labelled Negative, and RTS-present ones Positive.",
+        "Cite the paper (Yang et al. 2025, Scientific Data, doi:10.1038/s41597-025-04372-7) and the data (doi:10.18739/A2PK0738B).",
+        "Contributions of new outlines are welcome through the GitHub repository.",
+        "Sign with first name only."
+      ],
+      "materials": {
+        "incoming.md": "Dear Dr Yang,\n\nI am a second-year PhD student working on thaw slump detection in Alaska. I found the ARTS dataset on GitHub and would like to use it for training. Could you tell me whether the RTS-absent tiles can be used as negative examples, and how I should cite the dataset?\n\nMany thanks,\nPriya"
+      },
+      "expectations": [
+        "Answers both questions in the first lines",
+        "Gives both DOIs",
+        "Friendly",
+        "At most 120 words",
+        "Signed with the first name"
+      ]
+    },
+    {
+      "id": "D02",
+      "family": "everyday",
+      "genre": "email",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "email the co-authors, need comments on the revised draft by friday 31st. mention the discussion got shorter",
+      "audience": "Co-authors of a burned-area mapping paper, busy scientists.",
+      "limit_words": 150,
+      "facts": [
+        "The revised draft is on Overleaf (same link as before).",
+        "Deadline for comments: Friday 31 October 2026.",
+        "Main change: the Discussion was cut from 2,100 to 1,200 words to meet the journal limit; two paragraphs on future work moved to the supplement.",
+        "Ask: please check whether the shorter Discussion still covers your part of the work.",
+        "If someone does not reply by the deadline, we will assume they are happy with the draft."
+      ],
+      "materials": {},
+      "expectations": [
+        "The ask and the deadline come in the first two sentences",
+        "Says what changed and why",
+        "Says what kind of comments are wanted",
+        "At most 150 words"
+      ]
+    },
+    {
+      "id": "D03",
+      "family": "everyday",
+      "genre": "email_reply",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "decline this review invite politely, suggest someone else",
+      "audience": "A journal editor.",
+      "limit_words": 80,
+      "facts": [
+        "The invitation is in invitation.md.",
+        "I have three reviews in progress and no capacity until December.",
+        "Suggest Dr Anna Kowalski, a postdoc who works on ice-wedge polygon mapping. Offer to put the editor in touch."
+      ],
+      "materials": {
+        "invitation.md": "Dear Dr Yang,\n\nWould you be willing to review the manuscript 'Mapping ice-wedge polygons across Alaska with deep learning' for our journal? Reviews are due within 21 days.\n\nBest regards,\nThe Editor"
+      },
+      "expectations": [
+        "Declines in the first sentence",
+        "Gives a brief reason",
+        "Suggests the alternative reviewer and why she fits",
+        "At most 80 words"
+      ]
+    },
+    {
+      "id": "D04",
+      "family": "everyday",
+      "genre": "feedback",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "write feedback to Jordan on the methods draft. kind but direct, 3 main points",
+      "audience": "Jordan, a mentee writing a first paper.",
+      "limit_words": 200,
+      "facts": [
+        "Jordan's draft is the methods section of a paper on cloud masking.",
+        "Point 1: it mixes results into the methods (accuracy numbers appear there).",
+        "Point 2: it uses three names for the same mask (cloud mask, QA mask, UDM2 mask); pick one.",
+        "Point 3: it does not say how the 0.4 threshold was chosen.",
+        "Good: the structure is clear and the figures are well made.",
+        "Next step: revise by next Wednesday and we will go through it on our call."
+      ],
+      "materials": {},
+      "expectations": [
+        "Three points, each with what to change and why",
+        "Praise is brief and specific",
+        "Kind but direct",
+        "At most 200 words"
+      ]
+    },
+    {
+      "id": "D05",
+      "family": "everyday",
+      "genre": "email",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "follow up with planet support about the missing tiles, they didn't reply last week",
+      "audience": "Customer support at a satellite data company.",
+      "limit_words": 120,
+      "facts": [
+        "First email sent on 13 October 2026, no reply yet.",
+        "Problem: quarterly basemap tiles for 2025 Q3 are missing over northern Taymyr, about 40 tiles. Downloading them returns HTTP 404.",
+        "We need them by mid-November for a processing run.",
+        "Account: the Woodwell research account."
+      ],
+      "materials": {},
+      "expectations": [
+        "Refers to the earlier email and its date",
+        "Restates the problem briefly and specifically",
+        "States the deadline and the ask",
+        "Polite, not passive-aggressive",
+        "At most 120 words"
+      ]
+    },
+    {
+      "id": "D06",
+      "family": "everyday",
+      "genre": "team_update",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "short update for the team channel about last night's inference run",
+      "audience": "The research team, in a chat channel.",
+      "limit_words": 80,
+      "facts": [
+        "The overnight inference run on Google Cloud stopped at 62% because spot VMs were pre-empted 14 times.",
+        "No data was lost; results so far are saved.",
+        "I moved the remaining 38% to on-demand VMs, at an extra cost of about 180 dollars.",
+        "It should finish by 3pm today.",
+        "Next time: add automatic retries for pre-empted jobs."
+      ],
+      "materials": {},
+      "expectations": [
+        "Covers what happened, the impact, the fix and when it will finish",
+        "Numbers match the facts",
+        "At most 80 words",
+        "Calm"
+      ]
+    },
+    {
+      "id": "D07",
+      "family": "everyday",
+      "genre": "email",
+      "mode": "draft",
+      "outside_field": false,
+      "prompt": "ask the editor for 2 more weeks on the revision",
+      "audience": "A journal editor.",
+      "limit_words": 120,
+      "facts": [
+        "The revision is due on 3 November 2026.",
+        "One reviewer asked for a new spatially blocked evaluation, which means re-running the model, about 10 days of computing.",
+        "Request: move the deadline to 17 November 2026.",
+        "Responses to all other comments are already drafted."
+      ],
+      "materials": {},
+      "expectations": [
+        "The request and the new date come early",
+        "Gives the concrete reason",
+        "At most 120 words"
+      ]
+    },
+    {
+      "id": "D08",
+      "family": "everyday",
+      "genre": "email",
+      "mode": "draft",
+      "outside_field": true,
+      "prompt": "email the landlord about the boiler, it's the second time this month",
+      "audience": "The landlord.",
+      "limit_words": 120,
+      "facts": [
+        "The boiler stopped giving hot water on Sunday 19 October.",
+        "It first failed on 6 October; an engineer fixed it on 8 October (pressure valve).",
+        "Now the pressure drops again overnight. No hot water or heating since Sunday.",
+        "Ask: send an engineer this week, ideally Wednesday or Thursday after 2pm.",
+        "Sign as the tenant of flat 4."
+      ],
+      "materials": {},
+      "expectations": [
+        "The problem and the ask come first",
+        "Gives the dates and notes that it is a repeat failure",
+        "Polite but firm",
+        "At most 120 words"
+      ]
+    },
+    {
+      "id": "D09",
+      "family": "everyday",
+      "genre": "email",
+      "mode": "draft",
+      "outside_field": true,
+      "prompt": "write to octopus about the wrong bill, keep it calm",
+      "audience": "Customer service at an electricity supplier.",
+      "limit_words": 150,
+      "facts": [
+        "The September bill charged for 412 kWh.",
+        "Smart meter readings: 10,452 on 1 September and 10,720 on 30 September, which is 268 kWh.",
+        "An estimated reading was probably used.",
+        "Ask: re-issue the bill from the actual readings and refund the difference.",
+        "Leave a placeholder for the account number."
+      ],
+      "materials": {},
+      "expectations": [
+        "States the error with the numbers",
+        "States the ask",
+        "Calm",
+        "At most 150 words"
+      ]
+    },
+    {
+      "id": "D10",
+      "family": "everyday",
+      "genre": "email",
+      "mode": "coedit",
+      "outside_field": false,
+      "prompt": "make this shorter, keep it polite",
+      "audience": "Mark, a contact at a partner organisation.",
+      "limit_words": null,
+      "facts": [
+        "The draft is in draft_email.md."
+      ],
+      "materials": {
+        "draft_email.md": "Hi Mark,\n\nI hope this email finds you well and that you had a lovely weekend! I just wanted to quickly reach out to touch base regarding the data sharing agreement that we discussed a little while ago, if you have a moment. I completely understand that you are probably extremely busy at the moment, so absolutely no pressure at all, but I was just wondering whether there might be any chance that you could possibly let me know roughly when you think you might be able to send over the signed version? It's not super urgent, but it would be really helpful if we could have it by the end of the month, as our data release is currently scheduled for the first week of November. Please don't hesitate to let me know if there is anything at all that I can do on my end to help make this process easier for you.\n\nThanks so much in advance, and have a great rest of your week!\n\nBest wishes,\nYili"
+      },
+      "expectations": [
+        "Keeps the agreement, the end-of-month need, the reason (release in the first week of November) and the offer to help",
+        "At most 60% of the original length",
+        "Polite",
+        "Adds nothing new"
+      ]
+    }
+  ]
+}

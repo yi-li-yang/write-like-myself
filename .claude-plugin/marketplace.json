@@ -1,0 +1,19 @@
+{
+  "name": "write-like-myself",
+  "owner": {
+    "name": "Yili Yang"
+  },
+  "metadata": {
+    "description": "A writing skill that helps AI agents write the way Yili Yang would.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "write-like-myself",
+      "source": "./plugins/write-like-myself",
+      "description": "A writing skill that helps AI agents write the way Yili Yang would, built on how readers read rather than on lists of rules.",
+      "version": "0.1.0",
+      "strict": true
+    }
+  ]
+}

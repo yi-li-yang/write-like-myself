@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Git for Windows runs hooks with sh, which needs LF line endings
+.githooks/* text eol=lf
+*.py text eol=lf

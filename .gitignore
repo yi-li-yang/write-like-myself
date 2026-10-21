@@ -1,0 +1,21 @@
+# Machine-specific settings, including the path to the private folder
+tools/local.toml
+
+# Private material never lives in this repository, but guard against strays
+corpus/
+private/
+rounds/
+results/
+workspace/
+evals/private/
+evals/results/
+*.jsonl
+*.sqlite
+*.pdf
+*.eml
+*.mbox
+
+# Python
+__pycache__/
+*.pyc
+.venv/
