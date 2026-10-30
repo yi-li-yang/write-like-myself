@@ -1,3 +1,5 @@
+> **This repository has moved.** The `write-like-myself` skill now lives in [yi-li-yang/skills](https://github.com/yi-li-yang/skills/tree/main/plugins/yili-skills/skills/write-like-myself), which holds all my skills in one plugin, with this repository's full history under [`dev/write-like-myself`](https://github.com/yi-li-yang/skills/tree/main/dev/write-like-myself). Install with `/plugin marketplace add yi-li-yang/skills` then `/plugin install yili-skills@yili-skills`. This repository is no longer updated.
+
 # write-like-myself
 
 This skill helps AI agents write text that I would sign as my own. The aim is that no reader suspects a machine wrote it. It applies to any text that a person reads, from a paper or a grant proposal to a web page or an email. It does not apply to code, data or configuration.
